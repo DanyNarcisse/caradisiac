@@ -13,7 +13,7 @@ async function print () {
 
   try {
     fs.appendFile("./brands.json", JSON.stringify(brands, null, 2), function() {});
-    console.log('copy in brands.json');
+    console.log('Copy in brands.json compelte.');
   } catch (err) {
     console.log(err);
   }

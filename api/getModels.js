@@ -3,6 +3,8 @@ const fs = require('fs');
 
 var brandResults = require('./brands.json');
 
+const cars = [];
+
 if (fs.existsSync('./models.json')) {
   fs.truncate('./models.json', 0, function() {
   })
@@ -14,14 +16,17 @@ async function print () {
   {
     const models = await getModels(brandResults[i]);
     console.log(models);
-    try {
-      fs.appendFile("./models.json", JSON.stringify(models, null, 2), function() {});
-      console.log('Copy in models.json' + String(models.brand));
-    } catch (err) {
-      console.log(err);
-    }
-  }
 
+    models.forEach(models => cars.push(models))
+
+    try {
+          fs.writeFile("./models.json", JSON.stringify(cars, null, 2), function() {});
+          console.log('Copy in models.json');
+        } catch (err) {
+          console.log(err);
+        }
+
+  }
 }
 
 print();
