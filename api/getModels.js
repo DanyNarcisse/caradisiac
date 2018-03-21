@@ -8,11 +8,6 @@ if (fs.existsSync('./models.json')) {
   })
 }
 
-//To Delete
-var lineReader = require('readline').createInterface({
-  input: require('fs').createReadStream('./brands.json')
-});
-
 async function print () {
 
   for (var i = 0; i<brandResults.length; i++)
@@ -20,7 +15,7 @@ async function print () {
     const models = await getModels(brandResults[i]);
     console.log(models);
     try {
-      fs.appendFile("./models.json", JSON.stringify(models) + ",\n", function() {});
+      fs.appendFile("./models.json", JSON.stringify(models, null, 2), function() {});
       console.log('Copy in models.json' + String(models.brand));
     } catch (err) {
       console.log(err);
