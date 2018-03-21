@@ -1,33 +1,32 @@
 const {getModels} = require('node-car-api');
 const fs = require('fs');
 
-const  brandResults = {};
+var brandResults = require('./brands.json');
+
 if (fs.existsSync('./models.json')) {
   fs.truncate('./models.json', 0, function() {
   })
 }
 
-//Reading lines from brands.json
+//To Delete
 var lineReader = require('readline').createInterface({
   input: require('fs').createReadStream('./brands.json')
 });
 
-lineReader.on('line', function(line) {
-  var content = JSON.parse(line)
-  for(var i = 0; i<content.length; i++)
+async function print () {
+
+  for (var i = 0; i<brandResults.length; i++)
   {
-    brandResults[i] = content[i];
-  }
-
-  console.log(brandResults);
-
-});
-
-async function print (test) {
-
-    const models = await getModels('RENAULT');
+    const models = await getModels(brandResults[i]);
     console.log(models);
+    try {
+      fs.appendFile("./models.json", JSON.stringify(models) + ",\n", function() {});
+      console.log('Copy in models.json' + String(models.brand));
+    } catch (err) {
+      console.log(err);
+    }
+  }
 
 }
 
-print(brandResults);
+print();
